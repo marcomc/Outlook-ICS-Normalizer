@@ -135,6 +135,13 @@ Configure a GitHub environment named `production`, restricted to `main`, with:
 | `DEPLOY_AUTH_JSON` | Dedicated OAuth JSON with `client_id`, `client_secret`, `refresh_token`; scopes limited to `script.projects`, `userinfo.email` and optional identity scopes `openid`/`userinfo.profile` |
 | `DEPLOY_TARGET_JSON` | JSON with `scriptId` and `account`, matching the existing private installation |
 
+Use a dedicated Google Cloud project and Desktop OAuth client for deployment;
+enable the Apps Script API and configure its app identity and production audience.
+The repository includes minimal [homepage](docs/index.html),
+[privacy](docs/privacy.html) and [license](docs/terms.html) pages for OAuth branding.
+Host them on a domain you control before publishing the OAuth app; Testing mode
+can expire the deployment authorization after seven days.
+
 For a dedicated CLI authorization, use an isolated `gws` configuration directory
 and request only these scopes with `gws auth login --scopes`. Verify the granted
 scopes before exporting the credential. Keep a private backup in your password
