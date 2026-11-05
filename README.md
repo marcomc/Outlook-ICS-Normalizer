@@ -137,10 +137,24 @@ Configure a GitHub environment named `production`, restricted to `main`, with:
 
 Use a dedicated Google Cloud project and Desktop OAuth client for deployment;
 enable the Apps Script API and configure its app identity and production audience.
-The repository includes minimal [homepage](docs/index.html),
-[privacy](docs/privacy.html) and [license](docs/terms.html) pages for OAuth branding.
-Host them on a domain you control before publishing the OAuth app; Testing mode
-can expire the deployment authorization after seven days.
+Personal installations use an External audience set to **In production** and a
+Desktop client. The owner may see Google's unverified-app warning when
+authorizing the client. Testing mode can expire the deployment authorization
+after seven days. The current Console requires homepage/privacy links before
+publishing this client; the personal-use verification exception does not remove
+that publishing prerequisite.
+
+The repository includes static [homepage](docs/index.html),
+[privacy](docs/privacy.html) and [license](docs/terms.html) pages, without scripts
+or analytics. Publish `docs/` with GitHub Pages, enable HTTPS, and verify the
+actual page contents before entering their URLs in OAuth branding. The project's
+public pages are at <https://marcomc.com/Outlook-ICS-Normalizer/>.
+
+Use `main` as the Pages source once the initial PR has merged. Before that merge,
+Pages can bootstrap from the reviewed feature branch; switch its source and its
+`github-pages` environment branch policy to `main` before deleting that branch.
+This publishes only static documentation; the separate `production` environment
+continues to restrict Apps Script credentials to `main`.
 
 For a dedicated CLI authorization, use an isolated `gws` configuration directory
 and request only these scopes with `gws auth login --scopes`. Verify the granted

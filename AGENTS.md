@@ -44,4 +44,7 @@ Follow `${HOME}/AGENTS.md` for canonical user-wide policy.
   calendar creation and trigger installation are explicit setup actions.
 - Modify `Code.js`, not generated `build/Code.gs`. Keep examples and tests synthetic.
 - Use English for authored project artifacts.
+- Before changing OAuth/deployment setup, compare the reference Catalogers' docs
+  and live client, audience, scopes and branding. Validate the current Console's
+  accepted configuration before adding infrastructure or declaring fields optional.
 <!-- END PROJECT LOCAL -->
