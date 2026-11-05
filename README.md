@@ -10,6 +10,7 @@ on Google servers, independently of the local computer.
 - [Configuration](#configuration)
 - [Synchronization](#synchronization)
 - [Operations](#operations)
+- [Deployment](#deployment)
 - [Limits](#limits)
 - [Development and license](#development-and-license)
 
@@ -112,6 +113,56 @@ these properties when replacing code/config. Do not remove a pending-creation
 marker until reconciling whether the remote object was created. Keep the dedicated
 calendar description marker intact. Local upload state is also private and should
 be retained for future updates.
+
+## Deployment
+
+Two GitHub Actions implement the release flow:
+
+```text
+branch -> pull request -> Validation / check -> merge main -> Deploy Apps Script
+```
+
+PR validation runs `make check` without Google credentials. A push to `main`
+repeats the same checks before uploading the exact current `main` commit to the
+existing production Apps Script project. No staging project is required.
+GitHub tags and releases document a completed deployment; they do not deploy.
+The existing timer uses the updated project HEAD on its next execution.
+
+Configure a GitHub environment named `production`, restricted to `main`, with:
+
+| Environment secret | Contents |
+| --- | --- |
+| `DEPLOY_AUTH_JSON` | Dedicated OAuth JSON with `client_id`, `client_secret`, `refresh_token`; scopes limited to `script.projects`, `userinfo.email` and optional identity scopes `openid`/`userinfo.profile` |
+| `DEPLOY_TARGET_JSON` | JSON with `scriptId` and `account`, matching the existing private installation |
+
+For a dedicated CLI authorization, use an isolated `gws` configuration directory
+and request only these scopes with `gws auth login --scopes`. Verify the granted
+scopes before exporting the credential. Keep a private backup in your password
+manager. Do not reuse the broad personal CLI credential or commit credential files.
+A changed OAuth scope or advanced service requires an owner-controlled install
+and consent before the automatic deployment can continue.
+
+Deployment verifies the authenticated account and project creator, requires the
+exact expected file set, preserves the installed `Config.gs` and manifest timezone,
+and rejects permission/service changes. It rechecks remote `main` and installed
+content immediately before upload, verifies exact cloud readback, then records a
+numbered Apps Script version labeled with the Git commit. Existing Script
+Properties, calendars and timers are retained. The numbered version is an audit
+snapshot; triggers still execute HEAD. Secrets and cloud source are never printed
+or uploaded as workflow artifacts. The runner temporarily reads private cloud
+configuration in memory to preserve it during the complete source update.
+
+Use a protected `main` requiring PRs and the `Validation / check` status.
+Deployment runs are serialized and never cancelled midway by a newer run; stale
+queued revisions fail before upload. After deployment, check the first scheduled
+sync in Apps Script Executions. A successful source upload is not proof that an
+external Calendar call succeeded.
+
+For rollback, revert the relevant code through a PR and merge it to `main`; the
+same workflow redeploys the previous behavior while retaining current private
+configuration. No new calendar or timer is created. Deployment failures do not
+retry mutations automatically. Inspect the installation before rerunning a failed
+job: source upload can succeed even if later readback/version recording fails.
 
 ## Limits
 
