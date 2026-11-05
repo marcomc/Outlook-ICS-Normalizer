@@ -1,0 +1,30 @@
+{
+  "feedUrl": "https://example.com/calendar.ics",
+  "timeZone": "Etc/UTC",
+  "fromDate": "20261109",
+  "toDate": "20261114",
+  "seriesTitles": [
+    "Unavailable",
+    "Remote work",
+    "Holiday"
+  ],
+  "minimumMasters": 3,
+  "allDayChecks": [
+    {
+      "date": "20261109",
+      "title": "Unavailable",
+      "count": 0
+    },
+    {
+      "date": "20261111",
+      "title": "Holiday",
+      "count": 1
+    },
+    {
+      "date": "20261111",
+      "title": "Remote work",
+      "count": 0
+    }
+  ],
+  "timedChecks": []
+}
