@@ -8,7 +8,7 @@ Follow `${HOME}/AGENTS.md` for canonical user-wide policy.
 ## Project Context
 
 - Project: `Outlook-ICS-Normalizer`
-- Description: Read-only Google Apps Script proof for configurable Outlook ICS recurrence normalization.
+- Description: Google Apps Script audit and dedicated-calendar synchronization for Outlook ICS.
 
 ## Project-Type Overlays
 
@@ -40,8 +40,8 @@ Follow `${HOME}/AGENTS.md` for canonical user-wide policy.
 - Run `make check` after changing source, tests, or documentation.
 - Keep configuration in ignored `config.local.json`; generate private cloud files
   with `make prepare`. Never publish `build/`, reports, real feed URLs, or Script IDs.
-- Preserve the read-only boundary. Calendar writes and scheduled execution require
-  separately authorized implementation and validation.
+- Keep `runAudit` read-only. Sync may write only its owned dedicated calendar;
+  calendar creation and trigger installation are explicit setup actions.
 - Modify `Code.js`, not generated `build/Code.gs`. Keep examples and tests synthetic.
 - Use English for authored project artifacts.
 <!-- END PROJECT LOCAL -->
