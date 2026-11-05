@@ -26,5 +26,17 @@
       "count": 0
     }
   ],
-  "timedChecks": []
+  "timedChecks": [],
+  "sync": {
+    "calendarName": "Outlook \u2014 Corrected",
+    "pastDays": 30,
+    "futureDays": 180,
+    "intervalMinutes": 15,
+    "maxEvents": 2000,
+    "maxIterations": 100000,
+    "maxChanges": 400,
+    "allDayBoundaryTimeZone": "UTC",
+    "floatingTimeZone": "UTC"
+  },
+  "installationAccount": "user@example.com"
 }

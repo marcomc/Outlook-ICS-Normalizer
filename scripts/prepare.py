@@ -35,10 +35,12 @@ def main():
         raise SystemExit("Refusing symlinked build directory.")
     output.mkdir(mode=0o700, exist_ok=True)
     output.chmod(0o700)
-    targets = [output / name for name in ("Code.gs", "Config.gs", "appsscript.json")]
+    targets = [output / name for name in ("Code.gs", "Config.gs", "Sync.gs", "Ical.gs", "appsscript.json")]
     if any(file.is_symlink() for file in targets):
         raise SystemExit("Refusing symlinked generated file.")
     write_private(output / "Code.gs", (root / "Code.js").read_text())
+    write_private(output / "Sync.gs", (root / "Sync.js").read_text())
+    write_private(output / "Ical.gs", (root / "vendor/ical.js").read_text())
     write_private(output / "appsscript.json", json.dumps(manifest, indent=2) + "\n")
     write_private(output / "Config.gs",
         "// Private installation configuration. Never publish this file.\n"
@@ -46,7 +48,7 @@ def main():
         + json.dumps(config, indent=2)
         + ";\n}\n"
     )
-    print("Prepared build/Code.gs, build/Config.gs and build/appsscript.json. No upload.")
+    print("Prepared private Apps Script files in build/. No upload.")
 
 
 if __name__ == "__main__":

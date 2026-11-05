@@ -17,7 +17,7 @@ class PrepareTest(unittest.TestCase):
         self.root = Path(self.temporary.name) / "project"
         self.root.mkdir()
         source = Path(__file__).resolve().parent.parent
-        for name in ("Code.js", "appsscript.json", "scripts/prepare.py"):
+        for name in ("Code.js", "appsscript.json", "scripts/prepare.py", "Sync.js", "vendor/ical.js"):
             destination = self.root / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / name, destination)
@@ -40,7 +40,7 @@ class PrepareTest(unittest.TestCase):
         old_inode = generated.stat().st_ino
         self.assertEqual(self.prepare().returncode, 0)
         self.assertNotEqual(generated.stat().st_ino, old_inode)
-        for name in ("Code.gs", "Config.gs", "appsscript.json"):
+        for name in ("Code.gs", "Config.gs", "Sync.gs", "Ical.gs", "appsscript.json"):
             self.assertEqual(stat.S_IMODE((build / name).stat().st_mode), 0o600)
         self.assertEqual(stat.S_IMODE(build.stat().st_mode), 0o700)
         self.assertEqual(list(build.glob(".prepare-*")), [])
@@ -57,7 +57,7 @@ class PrepareTest(unittest.TestCase):
         build.mkdir()
         sentinel = self.root.parent / "sentinel"
         sentinel.write_text("untouched")
-        for name in ("Code.gs", "Config.gs", "appsscript.json"):
+        for name in ("Code.gs", "Config.gs", "Sync.gs", "Ical.gs", "appsscript.json"):
             with self.subTest(name=name):
                 destination = build / name
                 destination.symlink_to(sentinel)
